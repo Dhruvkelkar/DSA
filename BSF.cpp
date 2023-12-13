@@ -1,90 +1,98 @@
+/*
+Experiment 13 : Represent a given graph using adjacency matrix/list to perform DFS and using adjacency list to perform BFS. 
+                Use the map of the area around the college as a graph. Identify the prominent land marks as nodes and perform DFS and BFS on that.
+Adjacency Matrix : using adj matrix -BFS(Que)
+*/
+
 #include <iostream>
- using namespace std;
+#include <stdlib.h>
+using namespace std;
+
+int cost[10][10], i, j, k, n, qu[10], front=0, rear=0, v, visit[10], visited[10];
+int stk[10], top=0, visit1[10], visited1[10];
+
 int main()
 {
-    int matrix[10][10],i,j,k,qu[10],stack[10],front=0,rear=0,top=-1, visited[10],n,m,v,visited1[10];
-    char type;
-    cout<<"Enter D for directed and U for undirected : ";
-    cin>>type;
-    cout<<"Enter the number of vertices: ";
-    cin>>n;
-    cout<<"Enter the number of edges : ";
-    cin>>m;
-    cout<<"Enter the edges: "<<endl;
-    for(k = 1 ; k <= m ; k++)
+    int m;
+    cout << "Enter number of vertices : ";
+    cin >> n;
+    cout << "Enter number of edges : ";
+    cin >> m;
+    
+    cout << "\nEDGES :\n";
+    for (k = 1; k <= m; k++)
     {
-        cin>>i>>j;
-        matrix[i][j]=1;
-        if(type=='u' || type=='U')
-        {
-            matrix[j][i]=1;
-        }
-    }
-    //display
-    cout<<"Adjacency matrix is: "<<endl;
-    for(i=1 ; i <= n ; i++)
-    {
-        for(j = 1 ; j<=n;j++)
-        {
-            cout<<matrix[i][j]<<"  ";
-        }
-        cout<<endl;
-    }
-    cout<<"Adjacency list is: "<<endl;
-    for(i=1;i<=n;i++)
-    {
-           cout<<i<<" ---> ";
-           for(j=1;j<=n;j++)
-           {
-              if(matrix[i][j]==1)
-              {
-                     cout<<j<<"  ";
-              }
-              
-           }
-           cout<<endl;
-    }
-    //bfs
-    cout<<"Enter the vertex to start: ";
-    cin>>v;
-    cout<<"BFS is: "<<endl;
-    qu[rear++]=v;
-    visited[v]=1;
-    while(front!=rear)
-    {
-           v=qu[front++];
-           cout<<v<<" --> ";
-           for(j=1;j<=n;j++)
-           {
-                  if(matrix[v][j]==1 && visited[j]==0)
-                  {
-                         visited[j]=1;
-                         qu[rear++]=j;
-                  }
-           }
-    }
-    //dfs
-    cout<<endl;
-    cout<<"Enter the vertex to start: ";
-    cin>>v;
-    cout<<"DFS is: "<<endl;
-    stack[++top]=v;
-    while(top!=-1)
-    {
-           v=stack[top--];
-           if(visited1[v]==0)
-           {
-               visited1[v]=1;
-               cout<<v<<" --> ";
-           }
-           for(j=1;j<=n;j++)
-           {
-                  if(matrix[v][j]==1 && visited1[j]==0)
-                  {
-                         stack[++top]=j;
-                  }
-           }
+        cin >> i >> j;
+        cost[i][j] = 1;
+        //cost[j][i] = 1;
     }
     
+    //display function
+    cout << "The adjacency matrix of the graph is : " << endl;
+    for (i = 1; i <= n; i++)
+    {
+        for (j = 1; j <= n; j++)
+        {
+            cout << " " << cost[i][j];
+        }
+        cout << endl;
+    }
+    
+    cout<<"The adjacency list is of the graph is: \n";
+    for (i=1;i<=n;i++)
+    {
+        cout<<i<<"-->";
+        for(j=1;j<=n;j++)
+        {
+            if(cost[i][j]==1)
+                cout<<j<<" ";
+        }
+        cout<<endl;
+    } 
+    //bfs
+    cout << "Enter initial vertex : ";
+    cin >> v;
+    cout << "The BFS of the Graph is\n";
+    cout << v<<endl;
+    visited[v] = 1;
+    k = 1;
+    while (k < n)
+    {
+        for (j = 1; j <= n; j++)
+            if (cost[v][j] != 0 && visited[j] != 1 && visit[j] != 1)
+            {
+                visit[j] = 1;
+                qu[rear++] = j;
+            }
+        v = qu[front++];
+        cout << v << " ";
+        k++;
+        visit[v] = 0;
+        visited[v] = 1;
+    }
+    //dfs
+    cout <<endl<<"Enter initial vertex : ";
+    cin >> v;
+    cout << "The DFS of the Graph is\n";
+    cout << v<<endl;
+    visited[v] = 1;
+    k = 1;
+    while (k < n)
+    {
+        for (j = n; j >= 1; j--)
+            if (cost[v][j] != 0 && visited1[j] != 1 && visit1[j] != 1)
+            {
+                visit1[j] = 1;
+                stk[top++] = j;
+               // top++;
+            }
+        v = stk[--top];
+        cout << v << " ";
+        k++;
+        visit1[v] = 0;
+        visited1[v] = 1;
+    }
+
     return 0;
 }
+
